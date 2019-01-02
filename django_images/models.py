@@ -4,7 +4,7 @@ from io import BytesIO
 
 from django.db import models
 from django.core.files.uploadedfile import InMemoryUploadedFile
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.dispatch import receiver
 import PIL
 

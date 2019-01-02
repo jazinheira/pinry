@@ -4,7 +4,7 @@ from django.test import TestCase
 from django.core.files.images import ImageFile
 from django.conf import settings
 from django.utils.six import BytesIO
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django_images.models import Image, Thumbnail
 from django_images.templatetags.images import at_size
 from django_images.utils import scale_and_crop
