@@ -14,7 +14,7 @@ v1_api.register(PinResource())
 v1_api.register(UserResource())
 
 urlpatterns = [
-    url(r'^api/', include(v1_api.urls, namespace='api')),
+    url(r'^api/', include(('v1_api.urls', 'urls'), namespace='api')),
 
     url(r'^pins/pin-form/$', TemplateView.as_view(template_name='core/pin_form.html'),
         name='pin-form'),
