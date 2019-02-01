@@ -8,9 +8,9 @@ admin.autodiscover()
 
 
 urlpatterns = [
-    url(r'^admin/', include(admin.site.urls)),
-    url(r'', include('core.urls', namespace='core')),
-    url(r'', include('users.urls', namespace='users')),
+    url(r'^admin/', admin.site.urls),
+    url(r'', include(('core.urls', 'core'), namespace='core')),
+    url(r'', include(('users.urls', 'users'), namespace='users')),
 ]
 
 
@@ -24,5 +24,5 @@ if settings.IS_TEST:
     urlpatterns += staticfiles_urlpatterns()
     # For test running of django_images
     urlpatterns += [
-        url(r'^__images/', include('django_images.urls')),
+        url(r'^__images/', django_images.urls),
     ]

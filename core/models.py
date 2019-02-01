@@ -7,6 +7,8 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.db import models, transaction
 from django.dispatch import receiver
 
+from polymorphic.models import PolymorphicModel
+
 from django_images.models import Image as BaseImage, Thumbnail
 from taggit.managers import TaggableManager
 
@@ -47,13 +49,13 @@ class Image(BaseImage):
         proxy = True
 
 
-class Pin(models.Model):
-    submitter = models.ForeignKey(User)
+class Pin(PolymorphicModel):
+    submitter = models.ForeignKey(User, on_delete=models.CASCADE)
     url = models.URLField(null=True)
     origin = models.URLField(null=True)
     referer = models.URLField(null=True)
     description = models.TextField(blank=True, null=True)
-    image = models.ForeignKey(Image, related_name='pin')
+    image = models.ForeignKey(Image, related_name='pin', on_delete=models.CASCADE)
     published = models.DateTimeField(auto_now_add=True)
     tags = TaggableManager()
 
@@ -64,3 +66,71 @@ class Pin(models.Model):
 @receiver(models.signals.post_delete, sender=Pin)
 def delete_pin_images(sender, instance, **kwargs):
     instance.image.delete()
+
+class WeddingDress(Pin):
+    NECKLINES = (
+        ('offsh', 'Off the Shoulder'),
+        ('portrait', 'Portrait'),
+        ('swthrt', 'Sweetheart'),
+        ('sabrina', 'Sabrina'),
+        ('halter', 'Halter'),
+        ('scoop', 'Scoop'),
+        ('jewel', 'Jewel'),
+        ('vneck', 'V-Neck'),
+        ('strapls', 'Strapless'),
+    )
+    DRESS_SIZES = (
+        (0, '0'),
+        (1, '1'),
+        (2, '2'),
+        (3, '3'),
+        (4, '4'),
+        (5, '5'),
+        (6, '6'),
+        (7, '7'),
+        (8, '8'),
+        (9, '9'),
+        (10, '10'),
+        (11, '11'),
+        (12, '12'),
+        (13, '13'),
+        (14, '14'),
+        (15, '15'),
+    )
+    SILHOUETTES = (
+        ('ball', 'Ball Gown'),
+        ('aline', 'A-Line'),
+        ('fitflare', 'Fit and Flare'),
+        ('mermaid', 'Mermaid'),
+        ('sheath', 'Sheath'),
+        ('trumpet', 'Trumpet'),
+        ('peplum', 'Peplum'),
+    )
+    HEIGHTS = (
+        ('under5', '< 5'),
+        ('5to54', '5 - 5.4'),
+        ('54to58', '5.4 - 5.8'),
+        ('58to6', '5.8 - 6'),
+        ('over6', '> 6'),
+    )
+
+    style = models.CharField(max_length=30)
+    #materials = TaggableManager(related_name='materials')
+    neckline = models.CharField(
+        max_length=8,
+        choices=NECKLINES,
+    )
+    size = models.CharField(
+        choices=DRESS_SIZES,
+    )
+    silhouette = models.CharField(
+        max_length=8,
+        choices=SILHOUETTES,
+    )
+    height = models.CharField(
+        max_length=8,
+        choices=HEIGHTS,
+    )
+
+
+

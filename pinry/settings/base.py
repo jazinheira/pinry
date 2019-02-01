@@ -19,6 +19,7 @@ INSTALLED_APPS = [
     'django_images',
     'core',
     'users',
+    'polymorphic',
 ]
 
 ROOT_URLCONF = 'pinry.urls'
@@ -136,6 +137,9 @@ IMAGE_SIZES = {
 
 # IS_TEST is a variable to mark if the test is running
 IS_TEST = False
+
+# Set tags to be case insensitive by default
+TAGGIT_CASE_INSENSITIVE = True
 
 # User custom settings
 IMAGE_AUTO_DELETE = True

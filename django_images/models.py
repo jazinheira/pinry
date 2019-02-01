@@ -102,7 +102,7 @@ class ThumbnailManager(models.Manager):
 
 
 class Thumbnail(models.Model):
-    original = models.ForeignKey(Image)
+    original = models.ForeignKey(Image, on_delete=models.CASCADE)
     image = models.ImageField(upload_to=upload_to,
                               height_field='height', width_field='width',
                               max_length=255)
